@@ -1,0 +1,19 @@
+{
+  "name": "",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^2.10.1",
+    "es6-weak-map": "^2.0.3",
+    "jquery": "^3.7.0",
+    "slick-carousel": "^1.8.1",
+    "wow.js": "^1.2.2"
+  }
+}

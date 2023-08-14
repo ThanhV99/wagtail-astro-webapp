@@ -1,0 +1,445 @@
+---
+import server_url from "../../config/serverUrl.json";
+import { fetchFilterCategories } from "../../api/data";
+
+const postsThoiSu = await fetchFilterCategories(
+  "blog.BlogPage",
+  "description,date_post,feed_image,categories(name),author",
+  "-first_published_at",
+  5,
+  3
+);
+
+const postsGiaoDuc = await fetchFilterCategories(
+  "blog.BlogPage",
+  "description,date_post,feed_image,categories(name),author",
+  "-first_published_at",
+  5,
+  1
+);
+
+const postsKinhDoang = await fetchFilterCategories(
+  "blog.BlogPage",
+  "description,date_post,feed_image,categories(name),author",
+  "-first_published_at",
+  5,
+  4
+);
+
+const postsKhoaHoc = await fetchFilterCategories(
+  "blog.BlogPage",
+  "description,date_post,feed_image,categories(name),author",
+  "-first_published_at",
+  5,
+  2
+);
+
+const postsTheThao = await fetchFilterCategories(
+  "blog.BlogPage",
+  "description,date_post,feed_image,categories(name),author",
+  "-first_published_at",
+  5,
+  7
+);
+
+---
+
+<div class="col-lg-8 col-md-8 col-sm-8">
+  <div class="left_content">
+    <div class="single_post_content">
+      <h2><span>Thời sự</span></h2>
+      <div class="single_post_content_left">
+        <ul class="business_catgnav wow fadeInDown">
+          <li>
+            <figure class="bsbig_fig">
+              <a href={postsThoiSu.items[0].meta.slug} class="featured_img">
+                <img
+                  src={`${server_url.server}${postsThoiSu.items[0].feed_image.meta.download_url}`}
+                  alt={postsThoiSu.items[0].title}
+                />
+                <span class="overlay"></span>
+              </a>
+              <figcaption>
+                <a href={postsThoiSu.items[0].meta.slug}
+                  >{postsThoiSu.items[0].title}</a
+                >
+              </figcaption>
+              <p>
+                {postsThoiSu.items[0].description}
+              </p>
+            </figure>
+          </li>
+        </ul>
+      </div>
+      <div class="single_post_content_right">
+        <ul class="spost_nav">
+          {
+            postsThoiSu.items.slice(1).map((item: any, index: number) => (
+              <li>
+                <div class="media wow fadeInDown">
+                  <a href={item.meta.slug} class="media-left">
+                    <img
+                      alt={item.title}
+                      src={`${server_url.server}${item.feed_image.meta.download_url}`}
+                    />
+                  </a>
+                  <div class="media-body">
+                    <a href={item.meta.slug} class="catg_title">
+                      {item.title}
+                    </a>
+                  </div>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+    <div class="edu_sport_area">
+      <div class="edu">
+        <div class="single_post_content">
+          <h2><span>Giáo dục</span></h2>
+          <ul class="business_catgnav wow fadeInDown">
+            <li>
+              <figure class="bsbig_fig">
+                <a href={postsGiaoDuc.items[0].meta.slug} class="featured_img">
+                  <img alt={postsGiaoDuc.items[0].title} src={`${server_url.server}${postsGiaoDuc.items[0].feed_image.meta.download_url}`} />
+                  <span class="overlay"></span>
+                </a>
+                <figcaption>
+                  <a href={postsGiaoDuc.items[0].meta.slug}
+                    >{postsGiaoDuc.items[0].title}</a
+                  >
+                </figcaption>
+                <p>
+                  {postsGiaoDuc.items[0].description}
+                </p>
+              </figure>
+            </li>
+          </ul>
+          <ul class="spost_nav">
+            {
+              postsGiaoDuc.items.slice(1).map((item: any, index: number) => (
+                <li>
+                  <div class="media wow fadeInDown">
+                    <a href={item.meta.slug} class="media-left">
+                      <img
+                        alt={item.title}
+                        src={`${server_url.server}${item.feed_image.meta.download_url}`}
+                      />
+                    </a>
+                    <div class="media-body">
+                      <a href={item.meta.slug} class="catg_title">
+                        {item.title}
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+      <div class="sport">
+        <div class="single_post_content">
+          <h2><span>Khoa Học</span></h2>
+          <ul class="business_catgnav">   
+            <li>
+              <figure class="bsbig_fig wow fadeInDown">
+                <a href={postsKhoaHoc.items[0].meta.slug} class="featured_img">
+                  <img alt={postsKhoaHoc.items[0].title} src={`${server_url.server}${postsKhoaHoc.items[0].feed_image.meta.download_url}`} />
+                  <span class="overlay"></span>
+                </a>
+                <figcaption>
+                  <a href={postsKhoaHoc.items[0].meta.slug}
+                    >{postsKhoaHoc.items[0].title}</a
+                  >
+                </figcaption>
+                <p>
+                  {postsKhoaHoc.items[0].description}
+                </p>
+              </figure>
+            </li>
+          </ul>
+          <ul class="spost_nav">
+            {
+              postsKhoaHoc.items.slice(1).map((item: any, index: number) => (
+                <li>
+                  <div class="media wow fadeInDown">
+                    <a href={item.meta.slug} class="media-left">
+                      <img
+                        alt={item.title}
+                        src={`${server_url.server}${item.feed_image.meta.download_url}`}
+                      />
+                    </a>
+                    <div class="media-body">
+                      <a href={item.meta.slug} class="catg_title">
+                        {item.title}
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="edu_sport_area">
+      <div class="edu">
+        <div class="single_post_content">
+          <h2><span>Giáo dục</span></h2>
+          <ul class="business_catgnav wow fadeInDown">
+            <li>
+              <figure class="bsbig_fig">
+                <a href={postsGiaoDuc.items[0].meta.slug} class="featured_img">
+                  <img alt={postsGiaoDuc.items[0].title} src={`${server_url.server}${postsGiaoDuc.items[0].feed_image.meta.download_url}`} />
+                  <span class="overlay"></span>
+                </a>
+                <figcaption>
+                  <a href={postsGiaoDuc.items[0].meta.slug}
+                    >{postsGiaoDuc.items[0].title}</a
+                  >
+                </figcaption>
+                <p>
+                  {postsGiaoDuc.items[0].description}
+                </p>
+              </figure>
+            </li>
+          </ul>
+          <ul class="spost_nav">
+            {
+              postsGiaoDuc.items.slice(1).map((item: any, index: number) => (
+                <li>
+                  <div class="media wow fadeInDown">
+                    <a href={item.meta.slug} class="media-left">
+                      <img
+                        alt={item.title}
+                        src={`${server_url.server}${item.feed_image.meta.download_url}`}
+                      />
+                    </a>
+                    <div class="media-body">
+                      <a href={item.meta.slug} class="catg_title">
+                        {item.title}
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+      <div class="sport">
+        <div class="single_post_content">
+          <h2><span>Thể Thao</span></h2>
+          <ul class="business_catgnav">   
+            <li>
+              <figure class="bsbig_fig wow fadeInDown">
+                <a href={postsTheThao.items[0].meta.slug} class="featured_img">
+                  <img alt={postsTheThao.items[0].title} src={`${server_url.server}${postsTheThao.items[0].feed_image.meta.download_url}`} />
+                  <span class="overlay"></span>
+                </a>
+                <figcaption>
+                  <a href={postsTheThao.items[0].meta.slug}
+                    >{postsTheThao.items[0].title}</a
+                  >
+                </figcaption>
+                <p>
+                  {postsTheThao.items[0].description}
+                </p>
+              </figure>
+            </li>
+          </ul>
+          <ul class="spost_nav">
+            {
+              postsTheThao.items.slice(1).map((item: any, index: number) => (
+                <li>
+                  <div class="media wow fadeInDown">
+                    <a href={item.meta.slug} class="media-left">
+                      <img
+                        alt={item.title}
+                        src={`${server_url.server}${item.feed_image.meta.download_url}`}
+                      />
+                    </a>
+                    <div class="media-body">
+                      <a href={item.meta.slug} class="catg_title">
+                        {item.title}
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="single_post_content">
+      <h2><span>Photography</span></h2>
+      <ul class="photograph_nav wow fadeInDown">
+        <li>
+          <div class="photo_grid">
+            <figure class="effect-layla">
+              <a
+                class="fancybox-buttons"
+                data-fancybox-group="button"
+                href="images/photograph_img2.jpg"
+                title="Photography Ttile 1"
+              >
+                <img src="images/photograph_img2.jpg" alt="" /></a
+              >
+            </figure>
+          </div>
+        </li>
+        <li>
+          <div class="photo_grid">
+            <figure class="effect-layla">
+              <a
+                class="fancybox-buttons"
+                data-fancybox-group="button"
+                href="images/photograph_img3.jpg"
+                title="Photography Ttile 2"
+              >
+                <img src="images/photograph_img3.jpg" alt="" />
+              </a>
+            </figure>
+          </div>
+        </li>
+        <li>
+          <div class="photo_grid">
+            <figure class="effect-layla">
+              <a
+                class="fancybox-buttons"
+                data-fancybox-group="button"
+                href="images/photograph_img4.jpg"
+                title="Photography Ttile 3"
+              >
+                <img src="images/photograph_img4.jpg" alt="" />
+              </a>
+            </figure>
+          </div>
+        </li>
+        <li>
+          <div class="photo_grid">
+            <figure class="effect-layla">
+              <a
+                class="fancybox-buttons"
+                data-fancybox-group="button"
+                href="images/photograph_img4.jpg"
+                title="Photography Ttile 4"
+              >
+                <img src="images/photograph_img4.jpg" alt="" />
+              </a>
+            </figure>
+          </div>
+        </li>
+        <li>
+          <div class="photo_grid">
+            <figure class="effect-layla">
+              <a
+                class="fancybox-buttons"
+                data-fancybox-group="button"
+                href="images/photograph_img2.jpg"
+                title="Photography Ttile 5"
+              >
+                <img src="images/photograph_img2.jpg" alt="" />
+              </a>
+            </figure>
+          </div>
+        </li>
+        <li>
+          <div class="photo_grid">
+            <figure class="effect-layla">
+              <a
+                class="fancybox-buttons"
+                data-fancybox-group="button"
+                href="images/photograph_img3.jpg"
+                title="Photography Ttile 6"
+              >
+                <img src="images/photograph_img3.jpg" alt="" />
+              </a>
+            </figure>
+          </div>
+        </li>
+      </ul>
+    </div> -->
+    <!-- <div class="single_post_content">
+      <h2><span>Games</span></h2>
+      <div class="single_post_content_left">
+        <ul class="business_catgnav">
+          <li>
+            <figure class="bsbig_fig wow fadeInDown">
+              <a class="featured_img" href="pages/single_page.html">
+                <img src="images/featured_img1.jpg" alt="" />
+                <span class="overlay"></span>
+              </a>
+              <figcaption>
+                <a href="pages/single_page.html"
+                  >Proin rhoncus consequat nisl eu ornare mauris</a
+                >
+              </figcaption>
+              <p>
+                Nunc tincidunt, elit non cursus euismod, lacus augue ornare
+                metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a
+                phare...
+              </p>
+            </figure>
+          </li>
+        </ul>
+      </div>
+      <div class="single_post_content_right">
+        <ul class="spost_nav">
+          <li>
+            <div class="media wow fadeInDown">
+              <a href="pages/single_page.html" class="media-left">
+                <img alt="" src="images/post_img1.jpg" />
+              </a>
+              <div class="media-body">
+                <a href="pages/single_page.html" class="catg_title">
+                  Aliquam malesuada diam eget turpis varius 1</a
+                >
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="media wow fadeInDown">
+              <a href="pages/single_page.html" class="media-left">
+                <img alt="" src="images/post_img2.jpg" />
+              </a>
+              <div class="media-body">
+                <a href="pages/single_page.html" class="catg_title">
+                  Aliquam malesuada diam eget turpis varius 2</a
+                >
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="media wow fadeInDown">
+              <a href="pages/single_page.html" class="media-left">
+                <img alt="" src="images/post_img1.jpg" />
+              </a>
+              <div class="media-body">
+                <a href="pages/single_page.html" class="catg_title">
+                  Aliquam malesuada diam eget turpis varius 3</a
+                >
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="media wow fadeInDown">
+              <a href="pages/single_page.html" class="media-left">
+                <img alt="" src="images/post_img2.jpg" />
+              </a>
+              <div class="media-body">
+                <a href="pages/single_page.html" class="catg_title">
+                  Aliquam malesuada diam eget turpis varius 4</a
+                >
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div> -->
+  </div>
+</div>

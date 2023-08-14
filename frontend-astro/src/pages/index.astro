@@ -1,0 +1,51 @@
+---
+export const prerender = true;
+
+import Base from "../layouts/Base.astro";
+import MainPost from "../layouts/home/MainPost.astro";
+import NavArea from "../layouts/NavArea.astro";
+import LaststNews from "../layouts/home/LastestNews.astro";
+import LastestPost from "../layouts/home/LastestPost.astro";
+import ContentLeft from "../layouts/home/ContentLeft.astro";
+import ContentRight from "../layouts/home/ContentRight.astro";
+
+import { fetchPostsList, PostsList } from "../api/data";
+
+const data = await fetchPostsList(
+  "blog.BlogPage",
+  "description,date_post,feed_image,categories(name),author",
+  "-first_published_at"
+);
+
+const datatest = await fetchPostsList(
+  "blog.BlogPage",
+  "description,date_post,feed_image,categories(name),author",
+  "-first_published_at"
+).then(e => e);
+// console.log(datatest)
+
+if (!data) return Astro.redirect("/404");
+const posts = data.items.slice(0, 5);
+const lastestPost = data.items.slice(0, 5);
+---
+
+<Base title="Tin tức mới nhất">
+  
+
+  <main>
+    <NavArea />
+    <LaststNews />
+    <section id="sliderSection">
+      <div class="row">
+        <MainPost posts={posts} />
+        <LastestPost posts={lastestPost} />
+      </div>
+    </section>
+    <section id="contentSection">
+      <div class="row">
+        <ContentLeft />
+        <ContentRight />
+      </div>
+    </section>
+  </main>
+</Base>

@@ -1,0 +1,17 @@
+---
+import SinglePage from "../layouts/SinglePage.astro";
+import Base from "../layouts/Base.astro";
+import { fetchSinglePost } from "../api/singlePost";
+
+const { slug } = Astro.params;
+
+const singlePost = await fetchSinglePost(slug)
+
+if(singlePost.items.length == 0){
+  return Astro.redirect("/404")
+}
+
+---
+<Base title={singlePost.items[0].title}>
+    <SinglePage post={singlePost.items[0]}></SinglePage>
+</Base>

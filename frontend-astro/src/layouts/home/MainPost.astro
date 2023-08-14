@@ -1,0 +1,33 @@
+---
+//  export interface Props{
+//    title?: string;
+//    me_title?: string;
+//  }
+import server_url from "../../config/serverUrl.json";
+
+const {posts} = Astro.props;
+---
+
+<div class="col-lg-8 col-md-8 col-sm-8">
+  <div class="slick_slider">
+    {
+      posts.map((post:any, i:number) => (
+          <div class="single_iteam">
+          <a href={post.meta.slug}>
+            <img src={`${server_url.server}${post.feed_image.meta.download_url}`} alt="" />
+          </a>
+          <div class="slider_article">
+            <h2>
+              <a class="slider_tittle" href={post.meta.slug}>
+                {post.title}
+              </a>
+            </h2>
+            <p>
+              {post.description}
+            </p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
