@@ -1,7 +1,16 @@
 ---
 import { fetchCategoriesList } from "../api/categories";
-const categories = await fetchCategoriesList();
 
+let categories: { meta: any; items: any[] } | undefined;
+
+try {
+  categories = await fetchCategoriesList();
+
+  // Process the response
+} catch (error) {
+  console.error("Error fetching data:", error);
+  // Handle the error or show a user-friendly message
+}
 ---
 
 <section id="navArea">
@@ -30,16 +39,15 @@ const categories = await fetchCategoriesList();
             ></a
           >
         </li>
-        
         {
-          categories.items.map((item: any, index: number) => (
-            <li>
-              <a href={item.slug}>{item.name}</a>
-            </li>
-           
-          ))
+          categories &&
+            categories.items.map((item: any, index: number) => (
+              <li>
+                <a href={item.slug}>{item.name}</a>
+              </li>
+            ))
         }
-        
+
         <!-- <li class="dropdown">
           <a
             href="#"

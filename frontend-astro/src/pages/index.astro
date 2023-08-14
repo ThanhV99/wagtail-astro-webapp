@@ -11,18 +11,25 @@ import ContentRight from "../layouts/home/ContentRight.astro";
 
 import { fetchPostsList, PostsList } from "../api/data";
 
-const data = await fetchPostsList(
-  "blog.BlogPage",
-  "description,date_post,feed_image,categories(name),author",
-  "-first_published_at"
-);
+// const data = await fetchPostsList(
+//   "blog.BlogPage",
+//   "description,date_post,feed_image,categories(name),author",
+//   "-first_published_at"
+// );
+var data;
 
-const datatest = await fetchPostsList(
+try {
+  data = await fetchPostsList(
   "blog.BlogPage",
   "description,date_post,feed_image,categories(name),author",
   "-first_published_at"
-).then(e => e);
-// console.log(datatest)
+  );
+
+  // Process the response
+} catch (error) {
+  console.error('Error fetching data:', error);
+  // Handle the error or show a user-friendly message
+}
 
 if (!data) return Astro.redirect("/404");
 const posts = data.items.slice(0, 5);

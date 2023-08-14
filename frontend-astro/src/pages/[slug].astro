@@ -5,13 +5,21 @@ import { fetchSinglePost } from "../api/singlePost";
 
 const { slug } = Astro.params;
 
-const singlePost = await fetchSinglePost(slug)
+let singlePost;
+try {
+  singlePost = await fetchSinglePost(slug);
+  if (singlePost.items.length == 0) {
+    return Astro.redirect("/404");
+  }
 
-if(singlePost.items.length == 0){
-  return Astro.redirect("/404")
+  // Process the response
+} catch (error) {
+  console.error("Error fetching data:", error);
+  // Handle the error or show a user-friendly message
 }
-
 ---
-<Base title={singlePost.items[0].title}>
-    <SinglePage post={singlePost.items[0]}></SinglePage>
-</Base>
+{singlePost && (
+  <Base title={singlePost.items[0].title}>
+    <SinglePage post={singlePost.items[0]} />
+  </Base>
+)}
