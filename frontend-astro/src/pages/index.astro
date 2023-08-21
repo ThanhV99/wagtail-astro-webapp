@@ -42,13 +42,13 @@ const lastestPost = data.items.slice(0, 5);
   <main>
     <NavArea />
     <LaststNews />
-    <section id="sliderSection">
+    <section id="sliderSection" style="content-visibility: auto;contain-intrinsic-size: 1000px;">
       <div class="row">
         <MainPost posts={posts} />
         <LastestPost posts={lastestPost} />
       </div>
     </section>
-    <section id="contentSection">
+    <section id="contentSection"  style="content-visibility: auto;contain-intrinsic-size: 1000px;">
       <div class="row">
         <ContentLeft />
         <ContentRight />
