@@ -17,6 +17,8 @@ from .views import BlogPageListAPIView, BlogPageDetailAPIView
 from .api import api_router, TotalBlogPostsAPIView
 from django.urls import re_path
 
+from django.views.decorators.csrf import csrf_exempt
+from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
@@ -27,6 +29,9 @@ urlpatterns = [
     
     path('api/v2/total-blog-posts/', TotalBlogPostsAPIView.as_view(), name='total_blog_posts'),
     re_path(r'^', include(wagtail_urls)),
+    
+    re_path(r'^api/graphql', csrf_exempt(GraphQLView.as_view())),
+    re_path(r'^api/graphiql', csrf_exempt(GraphQLView.as_view(graphiql=True, pretty=True))),
 ]
 
 if settings.DEBUG:

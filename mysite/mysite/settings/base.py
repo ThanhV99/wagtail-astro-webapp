@@ -22,6 +22,10 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 ALLOWED_HOSTS = ['13.236.167.60']
 
+GRAPHENE = {
+    'SCHEMA': 'blog.schema.schema',
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -29,6 +33,7 @@ INSTALLED_APPS = [
     "blog",
     "rest_framework",
     'wagtail.api.v2',
+    'graphene_django',
     
     "search",
     "wagtail.contrib.forms",
