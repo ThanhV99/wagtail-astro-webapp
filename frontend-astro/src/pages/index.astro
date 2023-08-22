@@ -11,11 +11,6 @@ import ContentRight from "../layouts/home/ContentRight.astro";
 
 import { fetchPostsList, PostsList } from "../api/data";
 
-// const data = await fetchPostsList(
-//   "blog.BlogPage",
-//   "description,date_post,feed_image,categories(name),author",
-//   "-first_published_at"
-// );
 var data;
 
 try {
@@ -34,6 +29,25 @@ try {
 if (!data) return Astro.redirect("/404");
 const posts = data.items.slice(0, 5);
 const lastestPost = data.items.slice(0, 5);
+
+const response = await fetch("http://127.0.0.1:8000/api/graphql",
+  {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      query: `
+          query {
+            allBlog {
+              title
+              description
+              author
+            }
+          }
+        `
+    }),
+  });
+const json = await response.json();
+console.log(json.data)
 ---
 
 <Base title="Tin tức mới nhất">

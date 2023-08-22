@@ -17,7 +17,6 @@ api_router = WagtailAPIRouter('wagtailapi')
 api_router.register_endpoint('pages', PagesAPIViewSet)
 api_router.register_endpoint('images', ImagesAPIViewSet)
 api_router.register_endpoint('documents', DocumentsAPIViewSet)
-blog_router = routers.DefaultRouter() 
 
 # co ham serializer cua model, dky router class ViewSet ke thua tu BaseAPIViewSet
 class CategoryAPIViewSet(BaseAPIViewSet):

@@ -1,3 +1,4 @@
+from typing import Iterable, Optional
 from django.db import models
 from modelcluster.fields import ParentalKey
 from wagtail.models import Page, Orderable
@@ -13,6 +14,8 @@ from wagtail.admin.panels import MultiFieldPanel
 #catogory
 from django import forms
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from django.utils.text import slugify
+from django.contrib import messages
 
 
 from blog.blocks import SectionBlock
@@ -88,6 +91,7 @@ class BlogPage(Page):
             return None
         
     search_fields = Page.search_fields + [
+        index.SearchField('categories')
         # index.SearchField('intro'),
         # index.SearchField('content'),
     ]
@@ -170,16 +174,30 @@ class BlogCategory(models.Model):
         allow_unicode=True,
         max_length=255,
         help_text='A slug to identify posts by this category',
-        default="a"
+        blank=True,
     )
 
     panels = [
         FieldPanel('name'),
-        FieldPanel("slug"),
+        FieldPanel("slug", read_only=True),
     ]
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            # Generate slug from name if it doesn't exist
+            self.slug = self.generate_unique_slug()
+        super().save(*args, **kwargs)
+        
+    def generate_unique_slug(self):
+        original_slug = slugify(self.name)
+        slug = original_slug
+        while BlogCategory.objects.filter(slug=slug).exclude(id=self.id).exists():
+            messages.error(None, f"Slug '{slug}' is not unique. Please choose a different name.")
+            raise ValueError("Non-unique slug")
+        return slug
         
     api_fields = [
         APIField('name'),
