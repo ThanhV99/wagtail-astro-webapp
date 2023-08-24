@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 import graphene
 from graphene_django import DjangoObjectType
 from blog.models import BlogPage, BlogCategory
+from graphene import Argument
+from django.db.models import F
 
 from blog.blocks import SectionBlock
 from wagtail import blocks
@@ -26,8 +28,13 @@ class TagsBlockType(graphene.ObjectType):
 
 # ---------- category ----------------
 class CategoryType(DjangoObjectType):
+    blog = graphene.List(lambda: BlogNode)
     class Meta:
         model = BlogCategory
+        fields = ['name', 'slug'] # truong categories link voi blog mac dinh dc sinh ra
+    def resolve_blog(self, info):
+        return self.BlogPage_Category.all() # ten related_name
+
 # ------------------------------------
 
 class BlogNode(DjangoObjectType):
@@ -37,7 +44,7 @@ class BlogNode(DjangoObjectType):
     
     class Meta:
         model = BlogPage
-        only_fields = ['title', 'date_post', 'description', 'author']
+        only_fields = ['title', 'update_time', 'description', 'author', 'slug']
     
     def resolve_body(self, info):
         body_data = []
@@ -57,14 +64,21 @@ class BlogNode(DjangoObjectType):
         return self.categories.all() 
     
 class Query(graphene.ObjectType):
-    allBlog = graphene.List(BlogNode)
+    allBlog = graphene.List(BlogNode, order_by=Argument(graphene.String, default_value='update_time'))
     blog = graphene.Field(BlogNode, slug=graphene.String())
+    
     allCategories = graphene.List(CategoryType)
     blogsByCategory = graphene.List(BlogNode, slug=graphene.String())
 
-    @graphene.resolve_only_args
-    def resolve_allBlog(self):
-        return BlogPage.objects.live()
+    # @graphene.resolve_only_args
+    def resolve_allBlog(self, info, order_by):
+        # Define the default field to sort by
+        if order_by == 'update_time':
+            order_field = F('update_time')
+        else:
+            order_field = F('update_time')  # You can set a default ordering field here
+
+        return BlogPage.objects.live().order_by(order_field).reverse()
     
     def resolve_blog(self, info, slug):
         try:

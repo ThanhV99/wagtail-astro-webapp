@@ -43,11 +43,6 @@ class BlogIndexPage(Page):
         FieldPanel('intro')
     ]
     
-    @property
-    def current_datetime(self):
-        locale.setlocale(locale.LC_TIME, 'vi_VN')  # Set the locale to Vietnamese
-        return datetime.now().strftime("%A, %d/%m/%Y")
-    
     
 class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey(
@@ -67,8 +62,9 @@ class ImageSerializedField(Field):
         }
         
 class BlogPage(Page):
-    date = models.DateField("Post date", null=True, blank=True)
+    date = models.DateField("Creation time", null=True, blank=True)
     date_post = models.CharField("Post date formatted", max_length=100, blank=True, null=True)
+    update_time = models.DateTimeField("Update time", null=True, blank=True)
     description = models.CharField(max_length=250)
     body = StreamField(
         [
@@ -80,7 +76,7 @@ class BlogPage(Page):
     )
     author = models.CharField(max_length=100, default="Anonymous")
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
-    categories = ParentalManyToManyField('blog.BlogCategory', blank=True, related_name='categories')
+    categories = ParentalManyToManyField('blog.BlogCategory', blank=True, related_name='BlogPage_Category')
     feed_image = models.ForeignKey('wagtailimages.Image', on_delete=models.SET_NULL, null=True, blank=False, related_name="+")
     
     def main_image(self):
@@ -97,6 +93,10 @@ class BlogPage(Page):
     ]
     
     content_panels = Page.content_panels + [
+        MultiFieldPanel([
+            FieldPanel('date', read_only=True),
+            FieldPanel('update_time', read_only=True),
+        ], heading="Time"),
         MultiFieldPanel([
             # FieldPanel('date'),
             FieldPanel('tags'),
@@ -120,17 +120,11 @@ class BlogPage(Page):
         APIField('author'),
     ]
     
-    @property
-    def current_datetime(self):
-        locale.setlocale(locale.LC_TIME, 'vi_VN')  # Set the locale to Vietnamese
-        return datetime.now().strftime("%A, %d/%m/%Y")
-    
     def save(self, *args, **kwargs):
-        locale.setlocale(locale.LC_TIME, 'vi_VN')
         if not self.id:
-            # Page is being published for the first time
-            self.date = datetime.now()
-        self.date_post = datetime.now().strftime("%A, %d/%m/%Y, %H:%M")
+            self.date = timezone.now()
+        
+        self.update_time = timezone.now()
         super().save(*args, **kwargs)
     
 class BlogPageGalleryImage(Orderable):

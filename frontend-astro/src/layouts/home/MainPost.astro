@@ -13,12 +13,12 @@ const {posts} = Astro.props;
     {
       posts.map((post:any, i:number) => (
           <div class="single_iteam">
-          <a href={post.meta.slug}>
-            <img src={`${server_url.server}${post.feed_image.meta.download_url}`} alt="" />
+          <a href={post.slug}>
+            <img src={`${server_url.server}${post.feedImage}`} alt="" />
           </a>
           <div class="slider_article">
             <h2>
-              <a class="slider_tittle" href={post.meta.slug}>
+              <a class="slider_tittle" href={post.slug}>
                 {post.title}
               </a>
             </h2>
