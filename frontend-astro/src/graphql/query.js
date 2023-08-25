@@ -52,5 +52,33 @@ const getBlogsByCategory = (slug, numBlogs) => {
   return fetchData(query);
 };
 
+const getSinglePost = (slug) => {
+  const query = `
+    query {
+      blog(slug: "${slug}") {
+        author
+        body {
+          ... on SectionBlockType {
+            image
+            caption
+          }
+          ... on RichTextBlockType {
+            content
+          }
+        }
+        category {
+          name
+        }
+        description
+        feedImage
+        slug
+        title
+        updateTime
+      }
+    }
+  `;
+  return fetchData(query);
+};
 
-export { getDataHomePage, getCategoryHomePage, getBlogsByCategory }
+
+export { getDataHomePage, getCategoryHomePage, getBlogsByCategory, getSinglePost }

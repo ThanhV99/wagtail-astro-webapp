@@ -1,60 +1,11 @@
 ---
 import server_url from "../config/serverUrl.json";
+import NavArea from "./NavArea.astro";
+import PopularPost from "../components/PopularPost.astro";
 
 const { post } = Astro.props;
 ---
-
-<section id="navArea">
-  <nav class="navbar navbar-inverse" role="navigation">
-    <div class="navbar-header">
-      <button
-        type="button"
-        class="navbar-toggle collapsed"
-        data-toggle="collapse"
-        data-target="#navbar"
-        aria-expanded="false"
-        aria-controls="navbar"
-      >
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav main_nav">
-        <li class="active">
-          <a href="../index.html"
-            ><span class="fa fa-home desktop-home"></span><span
-              class="mobile-show">Home</span
-            ></a
-          >
-        </li>
-        <li><a href="#">Technology</a></li>
-        <li class="dropdown">
-          <a
-            href="#"
-            class="dropdown-toggle"
-            data-toggle="dropdown"
-            role="button"
-            aria-expanded="false">Mobile</a
-          >
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Android</a></li>
-            <li><a href="#">Samsung</a></li>
-            <li><a href="#">Nokia</a></li>
-            <li><a href="#">Walton Mobile</a></li>
-            <li><a href="#">Sympony</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Laptops</a></li>
-        <li><a href="#">Tablets</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-        <li><a href="404.html">404 Page</a></li>
-      </ul>
-    </div>
-  </nav>
-</section>
+<NavArea></NavArea>
 <section id="newsSection">
   <div class="row">
     <div class="col-lg-12 col-md-12">
@@ -145,10 +96,10 @@ const { post } = Astro.props;
           <h1>{post.title}</h1>
           <div class="post_commentbox">
             <a href="#"><i class="fa fa-user"></i>{post.author}</a>
-            <span><i class="fa fa-calendar"></i>6:49 AM</span>
+            <span><i class="fa fa-calendar"></i>{post.updateTime}</span>
             <a href="#"
               ><i class="fa fa-tags"></i>{
-                post.categories.map((e: any) => e.name)
+                post.category.map((e: any) => e.name)
               }</a
             >
           </div>
@@ -156,25 +107,21 @@ const { post } = Astro.props;
             <p class="description">{post.description}</p>
             {
               post.body.map((e: any) => {
-                if (e.type === "content") {
-                  return <div set:html={e.value} />;
-                } else if (e.type === "image") {
+                if (e.content) {
+                  return <div set:html={e.content} />;
+                } else if (e.image) {
                   return (
-                    <>
-                      <div class="fig-picture">
-                        <img
-                          src={`${server_url.server}${e.value.image_url}`}
-                          style="width:100%;margin:0"
-                        />
-                      </div>
-                      <figcaption
-                        itemprop="description"
-                        set:html={e.value.caption}
+                    <div class="fig-picture">
+                      <img
+                        src={`${server_url.server}${e.image}`}
+                        style="width:100%;margin:0"
                       />
+                      <figcaption itemprop="description" set:html={e.caption} />
                       <br />
-                    </>
+                    </div>
                   );
                 }
+                return null; // Handle any other cases if needed
               })
             }
           </div>
@@ -249,59 +196,7 @@ const { post } = Astro.props;
     </nav>
     <div class="col-lg-4 col-md-4 col-sm-4">
       <aside class="right_content">
-        <div class="single_sidebar">
-          <h2><span>Popular Post</span></h2>
-          <ul class="spost_nav">
-            <li>
-              <div class="media wow fadeInDown">
-                <a href="single_page.html" class="media-left">
-                  <img alt="" src="../images/post_img1.jpg" />
-                </a>
-                <div class="media-body">
-                  <a href="single_page.html" class="catg_title">
-                    Aliquam malesuada diam eget turpis varius 1</a
-                  >
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="media wow fadeInDown">
-                <a href="single_page.html" class="media-left">
-                  <img alt="" src="../images/post_img2.jpg" />
-                </a>
-                <div class="media-body">
-                  <a href="single_page.html" class="catg_title">
-                    Aliquam malesuada diam eget turpis varius 2</a
-                  >
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="media wow fadeInDown">
-                <a href="single_page.html" class="media-left">
-                  <img alt="" src="../images/post_img1.jpg" />
-                </a>
-                <div class="media-body">
-                  <a href="single_page.html" class="catg_title">
-                    Aliquam malesuada diam eget turpis varius 3</a
-                  >
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="media wow fadeInDown">
-                <a href="single_page.html" class="media-left">
-                  <img alt="" src="../images/post_img2.jpg" />
-                </a>
-                <div class="media-body">
-                  <a href="single_page.html" class="catg_title">
-                    Aliquam malesuada diam eget turpis varius 4</a
-                  >
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
+        <PopularPost></PopularPost>
         <div class="single_sidebar">
           <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">

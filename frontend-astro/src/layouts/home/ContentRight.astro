@@ -1,53 +1,13 @@
 ---
 import server_url from "../../config/serverUrl.json";
-import { fetchPostsList } from "../../api/data";
-
-// let response: { meta: any; items: any[] } | undefined;
-// let popularPost: any[] | undefined;
-// try {
-//   response = await fetchPostsList(
-//     "blog.BlogPage",
-//     "description,date_post,feed_image,categories(name),author",
-//     "-first_published_at"
-//   );
-//   popularPost = response.items.slice(0, 5);
-
-//   // Process the response
-// } catch (error) {
-//   console.error("Error fetching data:", error);
-//   // Handle the error or show a user-friendly message
-// }
+import PopularPost from "../../components/PopularPost.astro";
 
 const { posts } = Astro.props;
 ---
 
 <div class="col-lg-4 col-md-4 col-sm-4">
   <aside class="right_content">
-    <div class="single_sidebar">
-      <h2><span>Popular Post</span></h2>
-      
-        <ul class="spost_nav">
-          {posts.map((item: any, index: number) => (
-            <li>
-              <div class="media wow fadeInDown">
-                <a href={item.slug} class="media-left">
-                  <img
-                    alt={item.title}
-                    src={`${server_url.server}${item.feedImage}`}
-                  />
-                </a>
-                <div class="media-body">
-                  <a href={item.slug} class="catg_title">
-                    {item.title}
-                  </a>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-        
-      
-    </div>
+    <PopularPost></PopularPost>
     <div class="single_sidebar">
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active">

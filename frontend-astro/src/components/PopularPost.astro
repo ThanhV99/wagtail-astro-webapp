@@ -1,0 +1,30 @@
+---
+import server_url from "../config/serverUrl.json";
+import {getDataHomePage} from "../graphql/query";
+
+const dataHomePage = await getDataHomePage();
+const popularPost = dataHomePage.allBlog.slice(0,5);
+---
+
+<div class="single_sidebar">
+    <h2><span>Popular Post</span></h2>
+      <ul class="spost_nav">
+        {popularPost.map((item: any, index: number) => (
+          <li>
+            <div class="media wow fadeInDown">
+              <a href={item.slug} class="media-left">
+                <img
+                  alt={item.title}
+                  src={`${server_url.server}${item.feedImage}`}
+                />
+              </a>
+              <div class="media-body">
+                <a href={item.slug} class="catg_title">
+                  {item.title}
+                </a>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+  </div>
