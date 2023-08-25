@@ -10,7 +10,7 @@ import ContentLeft from "../layouts/home/ContentLeft.astro";
 import ContentRight from "../layouts/home/ContentRight.astro";
 
 import { fetchPostsList, PostsList } from "../api/data";
-import {dataHomePage, allBlog, blog} from "../graphql/query";
+import {getDataHomePage} from "../graphql/query";
 
 var data;
 
@@ -27,9 +27,11 @@ try {
   // Handle the error or show a user-friendly message
 }
 
+const dataHomePage = await getDataHomePage();
 if (!dataHomePage) return Astro.redirect("/404");
-const posts = dataHomePage.data.allBlog.slice(0,5);
-const lastestPost = dataHomePage.data.allBlog.slice(0,5);
+const posts = dataHomePage.allBlog.slice(0,5);
+const lastestPost = dataHomePage.allBlog.slice(0,5);
+
 
 Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=5400');
 ---
@@ -38,13 +40,13 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600, s
   <main>
     <NavArea />
     <LaststNews />
-    <section id="sliderSection" style="content-visibility: auto;contain-intrinsic-size: 1000px;">
+    <section id="sliderSection" >
       <div class="row">
         <MainPost posts={posts} />
         <LastestPost posts={lastestPost} />
       </div>
     </section>
-    <section id="contentSection"  style="content-visibility: auto;contain-intrinsic-size: 1000px;">
+    <section id="contentSection" >
       <div class="row">
         <ContentLeft />
         <ContentRight posts={lastestPost} />

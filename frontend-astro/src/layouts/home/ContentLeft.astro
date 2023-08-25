@@ -1,99 +1,23 @@
 ---
 import server_url from "../../config/serverUrl.json";
 import { fetchFilterCategories } from "../../api/data";
+import { getBlogsByCategory } from "../../graphql/query.js";
 
-let postsThoiSu: { meta: any; items: any[] } | undefined;
-let postsGiaoDuc: { meta: any; items: any[] } | undefined;
-let postsKinhDoang: { meta: any; items: any[] } | undefined;
-let postsKhoaHoc: { meta: any; items: any[] } | undefined;
-let postsTheThao: { meta: any; items: any[] } | undefined;
-
-try {
-  postsThoiSu = await fetchFilterCategories(
-    "blog.BlogPage",
-    "description,date_post,feed_image,categories(name),author",
-    "-first_published_at",
-    5,
-    3
-  );
-
-  postsGiaoDuc = await fetchFilterCategories(
-    "blog.BlogPage",
-    "description,date_post,feed_image,categories(name),author",
-    "-first_published_at",
-    5,
-    1
-  );
-
-  postsKinhDoang = await fetchFilterCategories(
-    "blog.BlogPage",
-    "description,date_post,feed_image,categories(name),author",
-    "-first_published_at",
-    5,
-    4
-  );
-
-  postsKhoaHoc = await fetchFilterCategories(
-    "blog.BlogPage",
-    "description,date_post,feed_image,categories(name),author",
-    "-first_published_at",
-    5,
-    2
-  );
-
-  postsTheThao = await fetchFilterCategories(
-    "blog.BlogPage",
-    "description,date_post,feed_image,categories(name),author",
-    "-first_published_at",
-    5,
-    7
-  );
-
-  // Process the response
-} catch (error) {
-  console.error("Error fetching data:", error);
-  // Handle the error or show a user-friendly message
-}
-
-// const postsThoiSu = await fetchFilterCategories(
-//   "blog.BlogPage",
-//   "description,date_post,feed_image,categories(name),author",
-//   "-first_published_at",
-//   5,
-//   3
-// );
-
-// const postsGiaoDuc = await fetchFilterCategories(
-//   "blog.BlogPage",
-//   "description,date_post,feed_image,categories(name),author",
-//   "-first_published_at",
-//   5,
-//   1
-// );
-
-// const postsKinhDoang = await fetchFilterCategories(
-//   "blog.BlogPage",
-//   "description,date_post,feed_image,categories(name),author",
-//   "-first_published_at",
-//   5,
-//   4
-// );
-
-// const postsKhoaHoc = await fetchFilterCategories(
-//   "blog.BlogPage",
-//   "description,date_post,feed_image,categories(name),author",
-//   "-first_published_at",
-//   5,
-//   2
-// );
-
-// const postsTheThao = await fetchFilterCategories(
-//   "blog.BlogPage",
-//   "description,date_post,feed_image,categories(name),author",
-//   "-first_published_at",
-//   5,
-//   7
-// );
+const postsThoiSu = await getBlogsByCategory("thoi-su", 5).then(
+  (response) => response.blogsByCategory
+);
+const postsGiaoDuc = await getBlogsByCategory("giao-duc", 5).then(
+  (e) => e.blogsByCategory
+);
+const postsKinhDoanh = await getBlogsByCategory("kinh-doanh", 5).then(
+  (e) => e.blogsByCategory
+);
+const postsKhoaHoc = await getBlogsByCategory("khoa-hoc", 5).then(
+  (e) => e.blogsByCategory
+);
+const postsTheThao = await getBlogsByCategory("the-thao", 5).then(
+  (e) => e.blogsByCategory
+);
 ---
 
 <div class="col-lg-8 col-md-8 col-sm-8">
@@ -107,39 +31,34 @@ try {
               <ul class="business_catgnav wow fadeInDown">
                 <li>
                   <figure class="bsbig_fig">
-                    <a
-                      href={postsThoiSu.items[0].meta.slug}
-                      class="featured_img"
-                    >
+                    <a href={postsThoiSu[0].slug} class="featured_img">
                       <img
-                        src={`${server_url.server}${postsThoiSu.items[0].feed_image.meta.download_url}`}
-                        alt={postsThoiSu.items[0].title}
+                        src={`${server_url.server}${postsThoiSu[0].feedImage}`}
+                        alt={postsThoiSu[0].title}
                       />
                       <span class="overlay" />
                     </a>
                     <figcaption>
-                      <a href={postsThoiSu.items[0].meta.slug}>
-                        {postsThoiSu.items[0].title}
-                      </a>
+                      <a href={postsThoiSu[0].slug}>{postsThoiSu[0].title}</a>
                     </figcaption>
-                    <p>{postsThoiSu.items[0].description}</p>
+                    <p>{postsThoiSu[0].description}</p>
                   </figure>
                 </li>
               </ul>
             </div>
             <div class="single_post_content_right">
               <ul class="spost_nav">
-                {postsThoiSu.items.slice(1).map((item: any, index: number) => (
+                {postsThoiSu.slice(1).map((item: any, index: number) => (
                   <li>
                     <div class="media wow fadeInDown">
-                      <a href={item.meta.slug} class="media-left">
+                      <a href={item.slug} class="media-left">
                         <img
                           alt={item.title}
-                          src={`${server_url.server}${item.feed_image.meta.download_url}`}
+                          src={`${server_url.server}${item.feedImage}`}
                         />
                       </a>
                       <div class="media-body">
-                        <a href={item.meta.slug} class="catg_title">
+                        <a href={item.slug} class="catg_title">
                           {item.title}
                         </a>
                       </div>
@@ -162,45 +81,40 @@ try {
                 <ul class="business_catgnav wow fadeInDown">
                   <li>
                     <figure class="bsbig_fig">
-                      <a
-                        href={postsGiaoDuc.items[0].meta.slug}
-                        class="featured_img"
-                      >
+                      <a href={postsGiaoDuc[0].slug} class="featured_img">
                         <img
-                          alt={postsGiaoDuc.items[0].title}
-                          src={`${server_url.server}${postsGiaoDuc.items[0].feed_image.meta.download_url}`}
+                          alt={postsGiaoDuc[0].title}
+                          src={`${server_url.server}${postsGiaoDuc[0].feedImage}`}
                         />
                         <span class="overlay" />
                       </a>
                       <figcaption>
-                        <a href={postsGiaoDuc.items[0].meta.slug}>
-                          {postsGiaoDuc.items[0].title}
+                        <a href={postsGiaoDuc[0].slug}>
+                          {postsGiaoDuc[0].title}
                         </a>
                       </figcaption>
-                      <p>{postsGiaoDuc.items[0].description}</p>
+                      <p>{postsGiaoDuc[0].description}</p>
                     </figure>
                   </li>
                 </ul>
                 <ul class="spost_nav">
-                  {postsGiaoDuc.items
-                    .slice(1)
-                    .map((item: any, index: number) => (
-                      <li>
-                        <div class="media wow fadeInDown">
-                          <a href={item.meta.slug} class="media-left">
-                            <img
-                              alt={item.title}
-                              src={`${server_url.server}${item.feed_image.meta.download_url}`}
-                            />
+                  {postsGiaoDuc.slice(1).map((item: any, index: number) => (
+                    <li>
+                      <div class="media wow fadeInDown">
+                        <a href={item.slug} class="media-left">
+                          <img
+                            alt={item.title}
+                            src={`${server_url.server}${item.feedImage}`}
+                          />
+                        </a>
+                        <div class="media-body">
+                          <a href={item.slug} class="catg_title">
+                            {item.title}
                           </a>
-                          <div class="media-body">
-                            <a href={item.meta.slug} class="catg_title">
-                              {item.title}
-                            </a>
-                          </div>
                         </div>
-                      </li>
-                    ))}
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </>
             )
@@ -216,45 +130,40 @@ try {
                 <ul class="business_catgnav">
                   <li>
                     <figure class="bsbig_fig wow fadeInDown">
-                      <a
-                        href={postsKhoaHoc.items[0].meta.slug}
-                        class="featured_img"
-                      >
+                      <a href={postsKhoaHoc[0].slug} class="featured_img">
                         <img
-                          alt={postsKhoaHoc.items[0].title}
-                          src={`${server_url.server}${postsKhoaHoc.items[0].feed_image.meta.download_url}`}
+                          alt={postsKhoaHoc[0].title}
+                          src={`${server_url.server}${postsKhoaHoc[0].feedImage}`}
                         />
                         <span class="overlay" />
                       </a>
                       <figcaption>
-                        <a href={postsKhoaHoc.items[0].meta.slug}>
-                          {postsKhoaHoc.items[0].title}
+                        <a href={postsKhoaHoc[0].slug}>
+                          {postsKhoaHoc[0].title}
                         </a>
                       </figcaption>
-                      <p>{postsKhoaHoc.items[0].description}</p>
+                      <p>{postsKhoaHoc[0].description}</p>
                     </figure>
                   </li>
                 </ul>
                 <ul class="spost_nav">
-                  {postsKhoaHoc.items
-                    .slice(1)
-                    .map((item: any, index: number) => (
-                      <li>
-                        <div class="media wow fadeInDown">
-                          <a href={item.meta.slug} class="media-left">
-                            <img
-                              alt={item.title}
-                              src={`${server_url.server}${item.feed_image.meta.download_url}`}
-                            />
+                  {postsKhoaHoc.slice(1).map((item: any, index: number) => (
+                    <li>
+                      <div class="media wow fadeInDown">
+                        <a href={item.slug} class="media-left">
+                          <img
+                            alt={item.title}
+                            src={`${server_url.server}${item.feedImage}`}
+                          />
+                        </a>
+                        <div class="media-body">
+                          <a href={item.slug} class="catg_title">
+                            {item.title}
                           </a>
-                          <div class="media-body">
-                            <a href={item.meta.slug} class="catg_title">
-                              {item.title}
-                            </a>
-                          </div>
                         </div>
-                      </li>
-                    ))}
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </>
             )
@@ -272,45 +181,40 @@ try {
                 <ul class="business_catgnav wow fadeInDown">
                   <li>
                     <figure class="bsbig_fig">
-                      <a
-                        href={postsGiaoDuc.items[0].meta.slug}
-                        class="featured_img"
-                      >
+                      <a href={postsGiaoDuc[0].slug} class="featured_img">
                         <img
-                          alt={postsGiaoDuc.items[0].title}
-                          src={`${server_url.server}${postsGiaoDuc.items[0].feed_image.meta.download_url}`}
+                          alt={postsGiaoDuc[0].title}
+                          src={`${server_url.server}${postsGiaoDuc[0].feedImage}`}
                         />
                         <span class="overlay" />
                       </a>
                       <figcaption>
-                        <a href={postsGiaoDuc.items[0].meta.slug}>
-                          {postsGiaoDuc.items[0].title}
+                        <a href={postsGiaoDuc[0].slug}>
+                          {postsGiaoDuc[0].title}
                         </a>
                       </figcaption>
-                      <p>{postsGiaoDuc.items[0].description}</p>
+                      <p>{postsGiaoDuc[0].description}</p>
                     </figure>
                   </li>
                 </ul>
                 <ul class="spost_nav">
-                  {postsGiaoDuc.items
-                    .slice(1)
-                    .map((item: any, index: number) => (
-                      <li>
-                        <div class="media wow fadeInDown">
-                          <a href={item.meta.slug} class="media-left">
-                            <img
-                              alt={item.title}
-                              src={`${server_url.server}${item.feed_image.meta.download_url}`}
-                            />
+                  {postsGiaoDuc.slice(1).map((item: any, index: number) => (
+                    <li>
+                      <div class="media wow fadeInDown">
+                        <a href={item.slug} class="media-left">
+                          <img
+                            alt={item.title}
+                            src={`${server_url.server}${item.feedImage}`}
+                          />
+                        </a>
+                        <div class="media-body">
+                          <a href={item.slug} class="catg_title">
+                            {item.title}
                           </a>
-                          <div class="media-body">
-                            <a href={item.meta.slug} class="catg_title">
-                              {item.title}
-                            </a>
-                          </div>
                         </div>
-                      </li>
-                    ))}
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </>
             )
@@ -326,45 +230,40 @@ try {
                 <ul class="business_catgnav">
                   <li>
                     <figure class="bsbig_fig wow fadeInDown">
-                      <a
-                        href={postsTheThao.items[0].meta.slug}
-                        class="featured_img"
-                      >
+                      <a href={postsTheThao[0].slug} class="featured_img">
                         <img
-                          alt={postsTheThao.items[0].title}
-                          src={`${server_url.server}${postsTheThao.items[0].feed_image.meta.download_url}`}
+                          alt={postsTheThao[0].title}
+                          src={`${server_url.server}${postsTheThao[0].feedImage}`}
                         />
                         <span class="overlay" />
                       </a>
                       <figcaption>
-                        <a href={postsTheThao.items[0].meta.slug}>
-                          {postsTheThao.items[0].title}
+                        <a href={postsTheThao[0].slug}>
+                          {postsTheThao[0].title}
                         </a>
                       </figcaption>
-                      <p>{postsTheThao.items[0].description}</p>
+                      <p>{postsTheThao[0].description}</p>
                     </figure>
                   </li>
                 </ul>
                 <ul class="spost_nav">
-                  {postsTheThao.items
-                    .slice(1)
-                    .map((item: any, index: number) => (
-                      <li>
-                        <div class="media wow fadeInDown">
-                          <a href={item.meta.slug} class="media-left">
-                            <img
-                              alt={item.title}
-                              src={`${server_url.server}${item.feed_image.meta.download_url}`}
-                            />
+                  {postsTheThao.slice(1).map((item: any, index: number) => (
+                    <li>
+                      <div class="media wow fadeInDown">
+                        <a href={item.slug} class="media-left">
+                          <img
+                            alt={item.title}
+                            src={`${server_url.server}${item.feedImage}`}
+                          />
+                        </a>
+                        <div class="media-body">
+                          <a href={item.slug} class="catg_title">
+                            {item.title}
                           </a>
-                          <div class="media-body">
-                            <a href={item.meta.slug} class="catg_title">
-                              {item.title}
-                            </a>
-                          </div>
                         </div>
-                      </li>
-                    ))}
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </>
             )

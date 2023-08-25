@@ -1,5 +1,7 @@
 ---
-import {categoryHomePage} from "../graphql/query.js";
+import {getCategoryHomePage} from "../graphql/query.js";
+
+const categoryHomePage = await getCategoryHomePage().then((e) => e.allCategories)
 ---
 
 <section id="navArea">
@@ -30,7 +32,7 @@ import {categoryHomePage} from "../graphql/query.js";
         </li>
         {
           categoryHomePage &&
-          categoryHomePage.data.allCategories.map((item: any, index: number) => (
+          categoryHomePage.map((item: any, index: number) => (
               <li>
                 <a href={item.slug}>{item.name}</a>
               </li>

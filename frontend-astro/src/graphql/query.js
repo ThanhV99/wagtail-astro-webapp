@@ -1,88 +1,56 @@
 const url = "http://127.0.0.1:8000/api/graphql";
 
-const dataHomePage = await fetch(url,
-  {
+const fetchData = async (query) => {
+  const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      query: `
-          query{
-              allBlog {
-                title
-                description
-                feedImage
-                slug
-                updateTime
-              }
-          }
-      `
-    }),
-  }).then((response) => response.json());
+    body: JSON.stringify({ query }),
+  });
 
-const categoryHomePage = await fetch(url,
-  {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      query: `
-          query{
-            allCategories {
-                name
-                slug
-              }
-          }
-      `
-    }),
-  }).then((response) => response.json());
+  const data = await response.json();
+  return data.data;
+};
 
-const allBlog = await fetch(url,
-  {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      query: `
-            query{
-                allBlog {
-                  author
-                  title
-                  description
-                  body {
-                    ... on SectionBlockType {
-                      image
-                      caption
-                    }
-                    ... on RichTextBlockType {
-                      content
-                    }
-                  }
-                  updateTime
-                  category {
-                    name
-                    slug
-                  }
-                  feedImage
-                }
-            }
-        `
-    }),
-  }).then((response) => response.json());
+const getDataHomePage = () => {
+  const query = `
+    query {
+      allBlog {
+        title
+        description
+        feedImage
+        slug
+        updateTime
+      }
+    }
+  `;
+  return fetchData(query);
+};
 
-const blog = await fetch(url,
-  {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      query: `
-        query {
-            allBlog {
-                title
-                description
-                author
-            }
-        }
-    `
-    }),
-  }).then((response) => response.json());
+const getCategoryHomePage = () => {
+  const query = `
+    query {
+      allCategories {
+        name
+        slug
+      }
+    }
+  `;
+  return fetchData(query);
+};
 
-export { dataHomePage,categoryHomePage, allBlog, blog }
-// export {categoryHomePage}
+const getBlogsByCategory = (slug, numBlogs) => {
+  const query = `
+    query {
+      blogsByCategory(slug: "${slug}", numBlogs: ${numBlogs}) {
+        title
+        description
+        feedImage
+        slug
+      }
+    }
+  `;
+  return fetchData(query);
+};
+
+
+export { getDataHomePage, getCategoryHomePage, getBlogsByCategory }

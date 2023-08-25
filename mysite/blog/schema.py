@@ -68,7 +68,7 @@ class Query(graphene.ObjectType):
     blog = graphene.Field(BlogNode, slug=graphene.String())
     
     allCategories = graphene.List(CategoryType)
-    blogsByCategory = graphene.List(BlogNode, slug=graphene.String())
+    blogsByCategory = graphene.List(BlogNode, slug=graphene.String(), num_blogs=graphene.Int())
 
     # @graphene.resolve_only_args
     def resolve_allBlog(self, info, order_by):
@@ -89,10 +89,11 @@ class Query(graphene.ObjectType):
     def resolve_allCategories(self, info):
         return BlogCategory.objects.all()
     
-    def resolve_blogsByCategory(self, info, slug):
+    def resolve_blogsByCategory(self, info, slug, num_blogs=5):
         try:
             category = BlogCategory.objects.get(slug=slug)
-            return category.categories.live()  # Retrieve live blog pages associated with the category
+            order_field = F('update_time')
+            return category.BlogPage_Category.live().order_by(order_field).reverse()[:num_blogs]  # Retrieve live blog pages associated with the category
         except BlogCategory.DoesNotExist:
             return []
 
