@@ -3,29 +3,12 @@ export const prerender = true;
 
 import Base from "../layouts/Base.astro";
 import MainPost from "../layouts/home/MainPost.astro";
-import NavArea from "../layouts/NavArea.astro";
-import LaststNews from "../layouts/home/LastestNews.astro";
+
 import LastestPost from "../layouts/home/LastestPost.astro";
 import ContentLeft from "../layouts/home/ContentLeft.astro";
 import ContentRight from "../layouts/home/ContentRight.astro";
 
-import { fetchPostsList, PostsList } from "../api/data";
 import {getDataHomePage} from "../graphql/query";
-
-var data;
-
-try {
-  data = await fetchPostsList(
-  "blog.BlogPage",
-  "description,date_post,feed_image,categories(name),author",
-  "-first_published_at"
-  );
-
-  // Process the response
-} catch (error) {
-  console.error('Error fetching data:', error);
-  // Handle the error or show a user-friendly message
-}
 
 const dataHomePage = await getDataHomePage();
 if (!dataHomePage) return Astro.redirect("/404");
@@ -38,8 +21,8 @@ Astro.response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=3600, s
 
 <Base title="Tin tức mới nhất">
   <main>
-    <NavArea />
-    <LaststNews />
+    <!-- <NavArea />
+    <LaststNews /> -->
     <section id="sliderSection" >
       <div class="row">
         <MainPost posts={posts} />

@@ -1,0 +1,84 @@
+---
+import server_url from "../config/serverUrl.json";
+
+const { listPosts } = Astro.props;
+---
+
+<section
+    id="contentSection"
+    style="content-visibility: auto; contain-intrinsic-size: 1000px;"
+>
+    <div class="col-lg-8 col-md-8 col-sm-8">
+        <div class="left_content">
+            <div class="single_post_content">
+                <div class="single_iteam">
+                    <a href={listPosts[0].slug}>
+                        <img
+                            src={`${server_url.server}${listPosts[0].feedImage}`}
+                            alt=""
+                        />
+                    </a>
+                    <div class="slider_article">
+                        <h2>
+                            <a class="slider_tittle" href={listPosts[0].slug}>
+                                {listPosts[0].title}
+                            </a>
+                        </h2>
+                        <p>
+                            {listPosts[0].description}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+        <ul class="spost_nav">
+            {
+                listPosts.slice(1, 5).map((item: any, index: number) => (
+                    <li>
+                        <div class="media wow fadeInDown">
+                            <a href={item.slug} class="media-left">
+                                <img
+                                    alt={item.title}
+                                    src={`${server_url.server}${item.feedImage}`}
+                                />
+                            </a>
+                            <div class="media-body">
+                                <a href={item.slug} class="catg_title">
+                                    {item.title}
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+    <div class="row">
+        <ul class="spost_nav">
+            {
+                listPosts.slice(1, 5).map((item: any, index: number) => (
+                    <li>
+                        <div class="media wow fadeInDown">
+                            <a href={item.slug} class="media-left">
+                                <img class="featured_img"
+                                    alt={item.title}
+                                    src={`${server_url.server}${item.feedImage}`}
+                                />
+                            </a>
+                            <div class="media-body">
+                                <h4>
+                                    <a href={item.slug} class="catg_title">
+                                        {item.title}
+                                    </a>
+                                </h4>
+                                <p>{item.description}</p>
+                            </div>
+                        </div>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>

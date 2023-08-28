@@ -1,6 +1,8 @@
 ---
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import NavArea from '../components/NavArea.astro';
+import LastestNews from '../components/LastestNews.astro';
 
 interface Props {
   title: string;
@@ -50,6 +52,8 @@ const { title } = Astro.props;
 	<a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
 	<div class="container">
 		<Header></Header>
+    <NavArea />
+    <LastestNews />
 		<slot />
 		<Footer></Footer>
 	</div>

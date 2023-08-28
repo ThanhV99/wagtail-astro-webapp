@@ -1,16 +1,16 @@
 ---
 import SinglePage from "../layouts/SinglePage.astro";
 import Base from "../layouts/Base.astro";
-import { fetchSinglePost } from "../api/singlePost";
-import {getSinglePost} from "../graphql/query.js";
+import PostsByCategory from "../layouts/PostsByCategory.astro";
+import {getSinglePost, getBlogsByCategory} from "../graphql/query.js";
 
 const { slug } = Astro.params;
 
+const listPosts = await getBlogsByCategory(slug, -1).then((e) => e.blogsByCategory)
 const post = await getSinglePost(slug).then((e) => e.blog)
- 
+
 ---
-{post ? (
-  <Base title={post.title}>
-    <SinglePage post={post} />
-  </Base>
-) : (<p>Loading...</p>)}
+<Base title={post ? post.title : "Page Title"}>
+  {post ? <SinglePage post={post} /> : null}
+  {listPosts.length > 0  ? <PostsByCategory listPosts={listPosts}/> : null}
+</Base>

@@ -1,6 +1,5 @@
 ---
 import server_url from "../../config/serverUrl.json";
-import { fetchFilterCategories } from "../../api/data";
 import { getBlogsByCategory } from "../../graphql/query.js";
 
 const postsThoiSu = await getBlogsByCategory("thoi-su", 5).then(
