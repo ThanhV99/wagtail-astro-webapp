@@ -1,4 +1,4 @@
-const url = "http://13.236.167.60:3000/api/graphql";
+const url = "http://13.236.167.60/api/graphql";
 
 const fetchData = async (query) => {
   const response = await fetch(url, {
