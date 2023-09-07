@@ -1,18 +1,25 @@
 const url = "http://13.236.167.60/api/graphql";
 
 const fetchData = async (query) => {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query }),
-  });
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query }),
+    });
 
-  const data = await response.json();
-  return data.data;
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    // Handle the error here, e.g., log it or throw a custom error.
+    console.error('Error fetching data:', error);
+    throw error; // You can rethrow the error if needed.
+  }
 };
 
 const getDataHomePage = () => {
-  const query = `
+  try {
+    const query = `
     query {
       allBlog {
         title
@@ -23,11 +30,18 @@ const getDataHomePage = () => {
       }
     }
   `;
-  return fetchData(query);
+    return fetchData(query);
+  } catch (error) {
+    // Handle the error here, e.g., log it or throw a custom error.
+    console.error('Error fetching data:', error);
+    throw error; // You can rethrow the error if needed.
+  }
+
 };
 
 const getCategoryHomePage = () => {
-  const query = `
+  try {
+    const query = `
     query {
       allCategories {
         name
@@ -35,11 +49,18 @@ const getCategoryHomePage = () => {
       }
     }
   `;
-  return fetchData(query);
+    return fetchData(query);
+  } catch (error) {
+    // Handle the error here, e.g., log it or throw a custom error.
+    console.error('Error fetching data:', error);
+    throw error; // You can rethrow the error if needed.
+  }
+
 };
 
 const getBlogsByCategory = (slug, numBlogs) => {
-  const query = `
+  try {
+    const query = `
     query {
       blogsByCategory(slug: "${slug}", numBlogs: ${numBlogs}) {
         title
@@ -49,11 +70,18 @@ const getBlogsByCategory = (slug, numBlogs) => {
       }
     }
   `;
-  return fetchData(query);
+    return fetchData(query);
+  } catch (error) {
+    // Handle the error here, e.g., log it or throw a custom error.
+    console.error('Error fetching data:', error);
+    throw error; // You can rethrow the error if needed.
+  }
+
 };
 
 const getSinglePost = (slug) => {
-  const query = `
+  try {
+    const query = `
     query {
       blog(slug: "${slug}") {
         author
@@ -77,7 +105,13 @@ const getSinglePost = (slug) => {
       }
     }
   `;
-  return fetchData(query);
+    return fetchData(query);
+  } catch (error) {
+    // Handle the error here, e.g., log it or throw a custom error.
+    console.error('Error fetching data:', error);
+    throw error; // You can rethrow the error if needed.
+  }
+
 };
 
 
