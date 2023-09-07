@@ -97,8 +97,12 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ten_cso_du_lieu',
+        'USER': 'nguoi_dung',
+        'PASSWORD': 'a123',
+        'HOST': 'localhost',  # Địa chỉ máy chủ PostgreSQL
+        'PORT': '5432',   
     }
 }
 

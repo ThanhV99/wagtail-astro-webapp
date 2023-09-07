@@ -14,7 +14,7 @@ const { posts } = Astro.props;
           posts.map((post: any, i: number) => (
             <li>
               <div class="media">
-                <a href="pages/single_page.html" class="media-left">
+                <a href={post.slug} class="media-left">
                   <img src={`${server_url.server}${post.feedImage}`} alt=""/>
                 </a>
                 <div class="media-body">
